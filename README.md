@@ -30,47 +30,47 @@ Welcome to **Connectto**, a modern and interactive full-stack social media appli
 ---
 
 ##  Folder Structure
-Connectto/
-├── client/ # React frontend
-│ └── ...
-├── server/ # Node/Express backend
-│ └── ...
-└── README.md
+- Connectto/
+- ├── client/ # React frontend
+- │ └── ...
+- ├── server/ # Node/Express backend
+- │ └── ...
+- └── README.md
 
 ##  Getting Started
 ### 1. Clone the repository
 
-git clone https://github.com/saisriramdodda1302/Connectto
-cd Connectto
+- git clone https://github.com/saisriramdodda1302/Connectto
+- cd Connectto
 
 ### 2. Install dependencies
 
 # For backend
-cd server
-npm install
+- cd server
+- npm install
 # For frontend
-cd ../client
-npm install
+- cd ../client
+- npm install
 
 ### 3. Setting up environment variables
-Create a .env file in the /server directory with:
-PORT=5000
-DATABASE_URL=your_postgresql_url
-JWT_SECRET=your_jwt_secret
+# Create a .env file in the /server directory with:
+- PORT=5000
+- DATABASE_URL=your_postgresql_url
+- JWT_SECRET=your_jwt_secret
 
 ### 4.Running the App:
 # Run backend
-cd server
-npm run dev
+- cd server
+- npm run dev
 # Run frontend
-cd ../client
-npm start
+- cd ../client
+- npm start
 
 
-🤝Contributing:
-Contributions, ideas, and feedback are welcome! Please feel free to submit an issue or a pull request.
+# 🤝Contributing:
+- Contributions, ideas, and feedback are welcome! Please feel free to submit an issue or a pull request.
 
 🧑‍💻 Author
-Sai Sriram Dodda
-GitHub:https://github.com/saisriramdodda1302/
-Feel free to connect with me on LinkedIn https://www.linkedin.com/in/sai-sriram-dodda-885145289/
+- Sai Sriram Dodda
+- GitHub:https://github.com/saisriramdodda1302/
+- Feel free to connect with me on LinkedIn https://www.linkedin.com/in/sai-sriram-dodda-885145289/
