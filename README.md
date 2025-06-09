@@ -1,4 +1,4 @@
-# Connecto
+# Connectto
 # 🌐 Connectto — A Full-Stack Social Media App
 
 Welcome to **Connectto**, a modern and interactive full-stack social media application that empowers users to share posts, connect with friends, and engage in a seamless digital experience. Built using the **MERN + PostgreSQL** stack, this project focuses on clean UI/UX, robust backend architecture, and secure authentication.
