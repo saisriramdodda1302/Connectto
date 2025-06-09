@@ -8,7 +8,6 @@ Welcome to **Connectto**, a modern and interactive full-stack social media appli
 **Frontend**
 - React.js
 - Redux Toolkit
-- Tailwind CSS (or your styling tool)
 
 **Backend**
 - Node.js
