@@ -6,7 +6,7 @@ CREATE TABLE users(
 	
 	email varchar(250) NOT NULL UNIQUE,
 	password varchar(250) NOT NULL,
-	
+
 	picturePath varchar(500),
 	location varchar(500),
 	occupation varchar(250),
@@ -16,7 +16,7 @@ CREATE TABLE users(
 
 --INSERTING SOME DATA--
 INSERT INTO users(firstname,lastname,email,password,picturepath,location,occupation,viewedprofile,impressions) 
-VALUES('karthik','mohan','test123mo@gmail.com','kart','samosa','samosa','samosa',10,10);
+VALUES('saisriram','dodda','testing_saisriramdodda@gmail.com','saisriramdodda11','smtg','Hyderabad','smtg',10,10);
 
 -- creating friends database --
 CREATE TABLE friends(
