@@ -12,8 +12,9 @@ const LoginPage = () => {
         p="1rem 6%"
         textAlign="center"
       >
+        {/* header at top..like a logo */}
         <Typography fontWeight="bold" fontSize="32px" color="primary">
-          UnityWave
+          Connectto
         </Typography>
       </Box>
 
@@ -25,7 +26,7 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to UnityWave
+          Welcome to Connectto
         </Typography>
         <Form />
       </Box>
