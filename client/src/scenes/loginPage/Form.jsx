@@ -10,13 +10,9 @@ import {
 import Alert from '@mui/material/Alert';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {message} from "antd"
-
 import  axios  from "axios";
-
-import { Formik } from "formik"; //for form validation
-
+import { Formik } from "formik"; //for form validation..popular React library for building forms.
 import * as yup from "yup"; //this is for importing everything 
-
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "state";
@@ -24,7 +20,7 @@ import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 
 const registerSchema = yup.object().shape({
-  firstName: yup.string().required("required"),//if you keep a symbol or leave it blank then it won't accept it.
+  firstName: yup.string().required("required"),//if you keep a number or leave it blank then it won't accept it.
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),//It won't accept the value until you keep a valid email
   password: yup.string().required("required"),
