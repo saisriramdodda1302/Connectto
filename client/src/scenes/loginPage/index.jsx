@@ -1,36 +1,21 @@
-import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import Form from "./Form";
 
 const LoginPage = () => {
-  const theme = useTheme();
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   return (
-    <Box>
-      <Box
-        width="100%"
-        backgroundColor={theme.palette.background.alt}
-        p="1rem 6%"
-        textAlign="center"
-      >
-        {/* header at top..like a logo */}
-        <Typography fontWeight="bold" fontSize="32px" color="primary">
+    <div className="min-h-screen bg-[#f6f6f6] dark:bg-neutral-900 transition-colors duration-300">
+      <div className="w-full bg-white dark:bg-[#1A1A1A] p-6 text-center shadow-sm border-b border-neutral-100 dark:border-neutral-800 transition-colors duration-300">
+        <h1 className="font-bold text-3xl text-blue-500">
           Connectto
-        </Typography>
-      </Box>
+        </h1>
+      </div>
 
-      <Box
-        width={isNonMobileScreens ? "50%" : "93%"}
-        p="2rem"
-        m="2rem auto"
-        borderRadius="1.5rem"
-        backgroundColor={theme.palette.background.alt}
-      >
-        <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
+      <div className="w-[93%] lg:w-1/2 p-8 lg:p-12 my-12 mx-auto rounded-3xl bg-white dark:bg-[#1A1A1A] shadow-sm border border-neutral-100 dark:border-neutral-800 transition-colors duration-300">
+        <h5 className="font-medium text-xl mb-8 text-neutral-800 dark:text-gray-100">
           Welcome to Connectto
-        </Typography>
+        </h5>
         <Form />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

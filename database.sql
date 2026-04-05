@@ -20,8 +20,9 @@ VALUES('saisriram','dodda','testing_saisriramdodda@gmail.com','saisriramdodda11'
 
 -- creating friends database --
 CREATE TABLE friends(
-	_id serial primary key,
-	userid INTEGER REFERENCES users(_id) NOT NULL, 
+	_id INTEGER REFERENCES users(_id) NOT NULL,
+	userid INTEGER REFERENCES users(_id) NOT NULL,
+	PRIMARY KEY (_id, userid)
 );
 
 -- GETTING FRIENDS --
@@ -38,14 +39,14 @@ DELETE FROM friends WHERE _id = 1 AND userid = 2;
 CREATE TABLE post(
 	_id serial primary key,
 	userid INTEGER REFERENCES users(_id) NOT NULL, 
-	firstName varchar(50) NOT NULL,
-	lastName varchar(50) NOT NULL,
+	firstName varchar(50),
+	lastName varchar(50),
 	
 	location varchar(500),
 	description varchar(250),
 	
 	userPicturePath varchar(500),
-	picturePath varchar(500),
+	picturePath varchar(500)
 );
 
 --creating likes database

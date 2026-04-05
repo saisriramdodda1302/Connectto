@@ -5,6 +5,9 @@ import App from "./App";
 import authReducer from "./state";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
+import axios from "axios";
+
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 //this is needed for redux persist
 //this is to make that the user inf
 import {

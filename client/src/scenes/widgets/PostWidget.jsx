@@ -1,10 +1,8 @@
 import {
-  ChatBubbleOutlineOutlined,
-  FavoriteBorderOutlined,
-  FavoriteOutlined,
-  ShareOutlined,
-} from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+  MessageCircle,
+  Heart,
+  Share2
+} from "lucide-react";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -12,7 +10,6 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
-import PostsWidget from "./PostsWidget";
 
 const PostWidget = ({
   postId,
@@ -24,96 +21,85 @@ const PostWidget = ({
   userPicturePath,
   likes,
 }) => {
-
-  const comments = ["HELLO","HELLO"];
-
+  const comments = ["HELLO", "HELLO"];
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.value.token);
   const loggedInUserId = useSelector((state) => state.value.user._id);
-  const { palette } = useTheme();
-  const main = palette.neutral.main;
-  const primary = palette.primary.main;
 
-  // console.log(likes);
-  
-  if(likes==null) return;
+  if (likes == null) return null;
 
-  const isLiked = likes.find((index)=>index.userid===loggedInUserId);
+  const isLiked = likes.find((index) => index.userid === loggedInUserId);
   const likeCount = likes.length;
 
-  
-
   const patchLike = async () => {
-    const response = await axios.patch(`/posts/${postId}/like`,{userId:loggedInUserId},{
+    const response = await axios.patch(`/posts/${postId}/like`, { userId: loggedInUserId }, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
     });
     const updatedPost = response.data;
-
-    // console.log(updatedPost);
-
     dispatch(setPosts({ posts: updatedPost }));
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper className="my-8 transition-colors duration-300">
       <Friend
         friendId={postUserId}
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <p className="text-neutral-700 dark:text-gray-200 mt-4 text-base">
         {description}
-      </Typography>
+      </p>
       {picturePath && (
         <img
           width="100%"
           height="auto"
           alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          className="rounded-xl mt-4 object-cover"
+          src={`${import.meta.env.VITE_API_URL || "http://localhost:3001"}/assets/${picturePath}`}
         />
       )}
-      <FlexBetween mt="0.25rem">
-        <FlexBetween gap="1rem">
+      <FlexBetween className="mt-4">
+        <FlexBetween gap="1.5rem">
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={patchLike}>
+            <button onClick={patchLike} className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-300">
               {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+                <Heart className="w-7 h-7 text-blue-500 fill-blue-500" />
               ) : (
-                <FavoriteBorderOutlined />
+                <Heart className="w-7 h-7 text-neutral-500 dark:text-gray-400" />
               )}
-            </IconButton>
-            <Typography>{likeCount}</Typography>
+            </button>
+            <p className="text-neutral-600 dark:text-gray-300 text-lg">{likeCount}</p>
           </FlexBetween>
 
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
-              <ChatBubbleOutlineOutlined />
-            </IconButton>
-            <Typography>{comments.length}</Typography>
+            <button onClick={() => setIsComments(!isComments)} className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-300">
+              <MessageCircle className="w-7 h-7 text-neutral-500 dark:text-gray-400" />
+            </button>
+            <p className="text-neutral-600 dark:text-gray-300 text-lg">{comments.length}</p>
           </FlexBetween>
         </FlexBetween>
 
-        <IconButton>
-          <ShareOutlined />
-        </IconButton>
+        <button className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-300">
+          <Share2 className="w-7 h-7 text-neutral-500 dark:text-gray-400" />
+        </button>
       </FlexBetween>
+      
       {isComments && (
-        <Box mt="0.5rem">
+        <div className="mt-4 text-neutral-700 dark:text-gray-200 transition-colors duration-300">
           {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+            <div key={`${name}-${i}`}>
+              <hr className="border-neutral-200 dark:border-neutral-700 my-2" />
+              <p className="my-3 pl-4 text-base">
                 {comment}
-              </Typography>
-            </Box>
+              </p>
+            </div>
           ))}
-          <Divider />
-        </Box>
+          <hr className="border-neutral-200 dark:border-neutral-700 my-2" />
+        </div>
       )}
     </WidgetWrapper>
   );

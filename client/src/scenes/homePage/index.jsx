@@ -1,44 +1,35 @@
-import { Box, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
-import UserWidget from "scenes/widgets/UserWidget";//like User profile
-import MyPostWidget from "scenes/widgets/MyPostWidget";//Post creation box 
-import PostsWidget from "scenes/widgets/PostsWidget";//Renders all posts, including user + friends (based on backend API)
+import UserWidget from "scenes/widgets/UserWidget";
+import MyPostWidget from "scenes/widgets/MyPostWidget";
+import PostsWidget from "scenes/widgets/PostsWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
-import Friend from "components/Friend";
 
 const HomePage = () => {
-  const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const { _id, picturepath } = useSelector((state) => state.value.user);//redux 
+  const { _id, picturepath } = useSelector((state) => state.value.user);
 
   return (
-    <Box>
+    <div>
       <Navbar />
-      <Box
-        width="100%"
-        padding="2rem 6%"
-        display={isNonMobileScreens ? "flex" : "block"}
-        gap="0.5rem"
-        justifyContent="space-between"
-      >
+      <div className="w-full px-[6%] py-8 block lg:flex gap-4 justify-between">
         {/* left part */}
-        <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
+        <div className="lg:w-[26%] w-full">
           <UserWidget userId={_id} picturePath={picturepath} />
-        </Box>
+        </div>
+        
         {/* middle part */}
-        <Box
-          flexBasis={isNonMobileScreens ? "42%" : undefined}
-          mt={isNonMobileScreens ? undefined : "2rem"}
-        >
-          <MyPostWidget picturepath={picturepath} />
-          <PostsWidget userId ={_id}/>
-        </Box>
+        <div className="lg:w-[42%] w-full mt-8 lg:mt-0">
+          <MyPostWidget picturePath={picturepath} />
+          <PostsWidget userId={_id} />
+        </div>
+        
         {/* rightside part only visible on big screens.*/}
-        {isNonMobileScreens && <Box flexBasis="26%">
-        <FriendListWidget userId={_id}/>
-        </Box>}
-      </Box>
-    </Box>
+        <div className="hidden lg:block lg:w-[26%] w-full">
+          <FriendListWidget userId={_id} />
+        </div>
+      </div>
+    </div>
   );
 };
+
 export default HomePage;

@@ -15,7 +15,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     });
     const data = response.data;
     dispatch(setPosts({ posts: data }));
-
   };
 
   const getUserPosts = async () => {
@@ -23,21 +22,16 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = response.data;
-    console.log(data);
     dispatch(setPosts({ posts: data }));
   };
 
   useEffect(() => {
-
     if (isProfile) {
       getUserPosts();
     } else {
       getPosts();
     }
-
-    console.log(posts);
-  }, []);
-
+  }, [isProfile, userId, token, dispatch]);
 
   return (
     <>
@@ -65,7 +59,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             likes={likes}
           />
         )
-      )} 
+      )}
     </>
   );
 };

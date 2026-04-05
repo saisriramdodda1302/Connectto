@@ -1,10 +1,18 @@
-import { Box } from "@mui/material";
-import {styled} from "@mui/system";
-
-const WidgetWrapper = styled(Box)(({theme})=>({
-    padding: "1.5rem 1.5rem 0.75rem 1.5rem",
-    backgroundColor: theme.palette.background.alt,
-    borderRadius: "0.75em"
-}));
-
-export default WidgetWrapper;
+export default function WidgetWrapper({ children, className = "", sx = {}, ...props }) {
+  return (
+    <div 
+      className={`p-6 sm:p-8 bg-white dark:bg-[#2A2A2A] rounded-3xl shadow-sm border border-neutral-100 dark:border-neutral-800 transition-colors duration-300 ${className}`} 
+      style={{
+        marginTop: props.mt,
+        marginBottom: props.mb,
+        margin: props.m,
+        padding: props.p,
+        ...sx,
+        ...props.style
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}

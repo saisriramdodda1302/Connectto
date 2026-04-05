@@ -1,10 +1,9 @@
 import {
-  ManageAccountsOutlined,
-  EditOutlined,
-  LocationOnOutlined,
-  WorkOutlineOutlined,
-} from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+  UserCog,
+  Pencil,
+  MapPin,
+  Briefcase
+} from "lucide-react";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -15,42 +14,31 @@ import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturepath }) => {
   const [user, setUser] = useState(null);
-  const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.value.token);
-  const dark = palette.neutral.dark;
-  const medium = palette.neutral.medium;
-  const main = palette.neutral.main;
 
   const getUser = async () => {
     try {
       const response = await axios.get(`/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      //neeed to set up the data for the users
-      // console.log(response.data);
       var user2 = response.data;
 
       try {
-        const response = await axios.get(`/users/${userId}/friends`, {
+        const responseFriends = await axios.get(`/users/${userId}/friends`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        //neeed to set up the data for the users
-        console.log(response.data);
         
-        user2 = {...user2,friends:response.data};
-
-        // console.log(user2);
-        
+        user2 = { ...user2, friends: responseFriends.data };
         setUser(user2);
-      } 
-      catch (err) {
+      } catch (err) {
         console.log(err);
       }
     } catch (err) {
       console.log(err);
     }
   };
+
   useEffect(() => {
     getUser();
   }, []);
@@ -74,97 +62,73 @@ const UserWidget = ({ userId, picturepath }) => {
       {/* First Row */}
       <FlexBetween
         gap="0.5rem"
-        pb="1.1rem"
+        className="pb-6 border-b border-neutral-200 dark:border-neutral-700 cursor-pointer transition-colors duration-300"
         onClick={() => navigate(`/profile/${userId}`)}
       >
-        <FlexBetween gap="1rem">
+        <FlexBetween gap="1.5rem">
           <UserImage image={picturepath} />
-          <Box>
-            <Typography
-              variant="h4"
-              color={dark}
-              fontWeight="500"
-              sx={{
-                "&:hover": {
-                  color: palette.primary.light,
-                  cursor: "pointer",
-                },
-              }}
-            >
+          <div>
+            <h4 className="text-2xl font-medium text-neutral-800 dark:text-gray-100 hover:text-blue-500 transition-colors duration-300">
               {firstname} {lastname}
-            </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
-          </Box>
+            </h4>
+            <p className="text-neutral-500 dark:text-neutral-400 mt-1">{friends.length} friends</p>
+          </div>
         </FlexBetween>
-        <ManageAccountsOutlined />
+        <UserCog className="w-7 h-7 text-neutral-700 dark:text-gray-300" />
       </FlexBetween>
 
-      <Divider />
-
       {/* Second Row */}
-      <Box p="1rem 0">
-        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{location}</Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="1rem">
-          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{occupation}</Typography>
-        </Box>
-      </Box>
-
-      <Divider />
+      <div className="py-6 border-b border-neutral-200 dark:border-neutral-700 transition-colors duration-300">
+        <div className="flex items-center gap-4 mb-4 text-neutral-500 dark:text-neutral-400">
+          <MapPin className="w-7 h-7" />
+          <p className="text-lg">{location}</p>
+        </div>
+        <div className="flex items-center gap-4 text-neutral-500 dark:text-neutral-400">
+          <Briefcase className="w-7 h-7" />
+          <p className="text-lg">{occupation}</p>
+        </div>
+      </div>
 
       {/* Third row */}
-      <Box p="1rem 0">
-        <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who's viewed your profile</Typography>
-          <Typography color={main} fontWeight="500">
-            {viewedprofile}
-          </Typography>
+      <div className="py-6 border-b border-neutral-200 dark:border-neutral-700 transition-colors duration-300">
+        <FlexBetween className="mb-3">
+          <p className="text-neutral-500 dark:text-neutral-400 text-lg">Who's viewed your profile</p>
+          <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">{viewedprofile}</p>
         </FlexBetween>
         <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
-          <Typography color={main} fontWeight="500">
-            {impressions}
-          </Typography>
+          <p className="text-neutral-500 dark:text-neutral-400 text-lg">Impressions of your post</p>
+          <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">{impressions}</p>
         </FlexBetween>
-      </Box>
-
-      <Divider />
+      </div>
 
       {/* Fourth row */}
-      <Box p="1rem 0">
-        <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
+      <div className="pt-6">
+        <p className="text-lg text-neutral-700 dark:text-gray-200 font-medium mb-6">
           Social Profiles
-        </Typography>
+        </p>
 
-        <FlexBetween gap="1rem" mb="0.5rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Twitter
-              </Typography>
-              <Typography color={medium}>Social Network</Typography>
-            </Box>
+        <FlexBetween gap="1rem" className="mb-4">
+          <FlexBetween gap="1.5rem">
+            <img src="../assets/twitter.png" alt="twitter" className="w-8 h-8" />
+            <div>
+              <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">Twitter</p>
+              <p className="text-neutral-500 dark:text-neutral-400 text-base">Social Network</p>
+            </div>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+          <Pencil className="w-6 h-6 text-neutral-500 dark:text-neutral-400 cursor-pointer hover:text-blue-500 transition" />
         </FlexBetween>
 
         <FlexBetween gap="1rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Linkedin
-              </Typography>
-              <Typography color={medium}>Network Platform</Typography>
-            </Box>
+          <FlexBetween gap="1.5rem">
+            <img src="../assets/linkedin.png" alt="linkedin" className="w-8 h-8" />
+            <div>
+              <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">Linkedin</p>
+              <p className="text-neutral-500 dark:text-neutral-400 text-base">Network Platform</p>
+            </div>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+          <Pencil className="w-6 h-6 text-neutral-500 dark:text-neutral-400 cursor-pointer hover:text-blue-500 transition" />
         </FlexBetween>
-      </Box>
+      </div>
     </WidgetWrapper>
   );
 };

@@ -1,10 +1,19 @@
-import { Box } from "@mui/material";
-import {styled} from "@mui/system";
-
-const FlexBetween = styled(Box)({
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  });
-  
-  export default FlexBetween; 
+export default function FlexBetween({ children, className = "", sx = {}, ...props }) {
+  return (
+    <div 
+      className={`flex justify-between items-center ${className}`} 
+      style={{
+        marginTop: props.mt,
+        marginBottom: props.mb,
+        margin: props.m,
+        padding: props.p,
+        gap: props.gap,
+        ...sx,
+        ...props.style
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
