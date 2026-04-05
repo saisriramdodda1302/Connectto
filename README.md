@@ -1,7 +1,7 @@
 # Connectto
-# 🌐 Connectto — A Full-Stack Social Media App
+# Connectto — Full-Stack Social Media App
 
-Welcome to **Connectto**, a modern and interactive full-stack social media application that empowers users to share posts, connect with friends, and engage in a seamless digital experience. Built using the **MERN + PostgreSQL** stack, this project focuses on clean UI/UX, robust backend architecture, and secure authentication.
+Welcome to **Connectto**, a modern and interactive full-stack social media application that empowers users to share posts, connect with friends, and engage in a seamless digital experience. Built using the **PostgreSQL + ERN +** stack, this project focuses on clean UI/UX, robust backend architecture, and secure authentication.
 
 ##  Tech Stack
 
@@ -66,10 +66,10 @@ Welcome to **Connectto**, a modern and interactive full-stack social media appli
 - npm start
 
 
-# 🤝Contributing:
+# Contributing:
 - Contributions, ideas, and feedback are welcome! Please feel free to submit an issue or a pull request.
 
-🧑‍💻 Author
+Author
 - Sai Sriram Dodda
 - GitHub:https://github.com/saisriramdodda1302/
 - Feel free to connect with me on LinkedIn https://www.linkedin.com/in/sai-sriram-dodda-885145289/
