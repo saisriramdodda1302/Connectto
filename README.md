@@ -20,6 +20,7 @@ Welcome to **Connectto**, a modern and interactive full-stack social media appli
 ## Features
 
 -  **CRUD Functionality** for Posts: Create, read, update, and delete posts with ease.
+-  **Implemented Rate Limiting** : At end points using express-rate-limit with combined user+IP.
 -  **Follow/Unfollow Friends**: Build your network by following other users.
 -  **Secure Authentication**: Integrated JWT-based authentication to manage user sessions securely.
 -  **Protected Routes**: Ensure only authorized users can access certain pages.
