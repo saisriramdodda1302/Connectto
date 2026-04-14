@@ -52,7 +52,7 @@ const NavBar = () => {
             <Sun className="w-6 h-6 text-neutral-700 dark:text-gray-300" />
           )}
         </button>
-        <MessageSquare className="w-6 h-6 text-neutral-700 dark:text-gray-300 cursor-pointer" />
+        <MessageSquare onClick={() => navigate("/chat")} className="w-6 h-6 text-neutral-700 dark:text-gray-300 cursor-pointer hover:text-blue-500 transition" />
         <Bell className="w-6 h-6 text-neutral-700 dark:text-gray-300 cursor-pointer" />
         <HelpCircle className="w-6 h-6 text-neutral-700 dark:text-gray-300 cursor-pointer" />
         
@@ -94,7 +94,7 @@ const NavBar = () => {
                 <Sun className="w-8 h-8 text-neutral-700 dark:text-gray-300" />
               )}
             </button>
-            <MessageSquare className="w-8 h-8 text-neutral-700 dark:text-gray-300 cursor-pointer" />
+            <MessageSquare onClick={() => navigate("/chat")} className="w-8 h-8 text-neutral-700 dark:text-gray-300 cursor-pointer hover:text-blue-500 transition" />
             <Bell className="w-8 h-8 text-neutral-700 dark:text-gray-300 cursor-pointer" />
             <HelpCircle className="w-8 h-8 text-neutral-700 dark:text-gray-300 cursor-pointer" />
             <select

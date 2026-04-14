@@ -14,13 +14,22 @@ import {verifyToken} from "./middleware/auth.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postsRoutes from "./routes/posts.js";
-
+import messageRoutes from "./routes/messages.js";
+import http from "http";
+import { Server } from "socket.io";
 
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 env.config();
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin"}));
@@ -60,8 +69,49 @@ app.post("/posts", verifyToken, postLimiter, upload.single("picture"), createPos
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postsRoutes);
+app.use("/messages", messageRoutes);
 
+/* SOCKET.IO SETUP */
+// Maintain a simple mapping of user ID to socket ID
+const userSocketMap = new Map();
 
-app.listen(port,()=>{
+io.on("connection", (socket) => {
+  console.log("Socket connected:", socket.id);
+  
+  socket.on("addUser", (userId) => {
+    userSocketMap.set(userId, socket.id);
+    console.log(`User ${userId} mapped to socket ${socket.id}`);
+  });
+
+  socket.on("sendMessage", ({ senderId, receiverId, content, created_at }) => {
+    const receiverSocketId = userSocketMap.get(receiverId);
+    
+    // Create the message object to broadcast
+    const incomingMessageMessage = {
+      sender_id: senderId,
+      receiver_id: receiverId,
+      content,
+      created_at: created_at || new Date().toISOString()
+    };
+
+    if (receiverSocketId) {
+      // Send to the active receiver client
+      io.to(receiverSocketId).emit("receiveMessage", incomingMessageMessage);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected:", socket.id);
+    for (let [id, sId] of userSocketMap.entries()) {
+      if (sId === socket.id) {
+        userSocketMap.delete(id);
+        console.log(`User ${id} removed from mapping.`);
+        break;
+      }
+    }
+  });
+});
+
+server.listen(port, () => {
 	console.log(`server running on port ${port}`); 
 });

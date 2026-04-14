@@ -55,3 +55,11 @@ CREATE TABLE likes(
 	userid INTEGER REFERENCES users(_id) NOT NULL
 )
 
+-- creating messages database
+CREATE TABLE messages(
+	_id serial primary key,
+	sender_id INTEGER REFERENCES users(_id) NOT NULL,
+	receiver_id INTEGER REFERENCES users(_id) NOT NULL,
+	content TEXT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

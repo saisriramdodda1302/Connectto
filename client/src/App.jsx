@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "./scenes/homePage";
 import LoginPage from "./scenes/loginPage";
 import ProfilePage from "./scenes/profilePage";
+import ChatPage from "./scenes/chatPage";
 import { useSelector } from "react-redux";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           {/* <Route path="/" element={<HomePage/>} /> */}
           <Route path="/home" element={isAuth?<HomePage />:<Navigate to="/" />} />
           <Route path="/profile/:userId" element={isAuth?<ProfilePage />:<Navigate to="/" />} />
+          <Route path="/chat" element={isAuth?<ChatPage />:<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
     </div>
