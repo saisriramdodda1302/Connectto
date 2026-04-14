@@ -47,9 +47,8 @@ const MyPostWidget = ({ picturePath }) => {
       }
     );
 
-    const posts = response.data;
-
-    dispatch(setPosts({posts}));
+    const postResult = response.data;
+    dispatch({ type: "auth/prependPost", payload: { post: postResult } });
     setImage(null);
     setPost("");
   };

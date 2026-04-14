@@ -11,20 +11,20 @@ const HomePage = () => {
   return (
     <div>
       <Navbar />
-      <div className="w-full px-[6%] py-8 block lg:flex gap-4 justify-between">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 justify-center">
         {/* left part */}
-        <div className="lg:w-[26%] w-full">
+        <div className="w-full lg:w-1/4 lg:max-w-sm">
           <UserWidget userId={_id} picturePath={picturepath} />
         </div>
         
         {/* middle part */}
-        <div className="lg:w-[42%] w-full mt-8 lg:mt-0">
+        <div className="w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
           <MyPostWidget picturePath={picturepath} />
           <PostsWidget userId={_id} />
         </div>
         
         {/* rightside part only visible on big screens.*/}
-        <div className="hidden lg:block lg:w-[26%] w-full">
+        <div className="hidden lg:block lg:w-1/4 lg:max-w-sm">
           <FriendListWidget userId={_id} />
         </div>
       </div>

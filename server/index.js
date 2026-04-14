@@ -30,13 +30,13 @@ if (!fs.existsSync("public/assets")) {
     fs.mkdirSync("public/assets", { recursive: true });
 }
 
-app.use(express.json({limit:"30mb", extended: true})); //makes the maximum limit to send as 30mb
-app.use(express.urlencoded({limit:"30mb",extended:true}));//makes the maximum limit to send a 30
+app.use(express.json({limit:"30mb", extended: true})); //makes the maximum limit to send as 30mb.
+app.use(express.urlencoded({limit:"30mb",extended:true}));//makes the maximum limit to send a 30.
 
 app.use(cors());
 app.use("/assets",express.static(path.join(__dirname, 'public/assets')));//In a real system, you need to store this locally
 
-//File Storage
+//File Storage.
 const storage = multer.diskStorage({
     destination: function(req,file,cb){
         cb(null,"public/assets");
@@ -46,18 +46,20 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage});//this helps in the uploading part
+const upload = multer({storage});//this helps in the uploading part.
 
 const port = process.env.PORT;
 
-//here upload is used a middleware which uploads the picture
-app.post("/auth/register",upload.single("picture"),register);
-app.post("/posts",verifyToken,upload.single("picture"),createPost);
+//here upload is used a middleware which uploads the picture.
+import { authLimiter, postLimiter } from "./middleware/rateLimiter.js";
 
-//Routes
-app.use("/auth",authRoutes);
-app.use("/users",userRoutes);
-app.use("/posts",postsRoutes);
+app.post("/auth/register", authLimiter, upload.single("picture"), register);
+app.post("/posts", verifyToken, postLimiter, upload.single("picture"), createPost);
+
+//Routes.
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postsRoutes);
 
 
 app.listen(port,()=>{

@@ -33,13 +33,13 @@ const ProfilePage = () => {
     return (
         <div>
             <Navbar />
-            <div className="w-full px-[6%] py-8 block lg:flex gap-8 justify-center">
-                <div className="lg:w-[26%] w-full">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 justify-center">
+                <div className="w-full lg:w-1/3 lg:max-w-md">
                     <UserWidget userId={user._id} picturePath={user.picturepath} />
                     <div className="my-8" />
                     <FriendListWidget userId={user._id} type="profile" />
                 </div>
-                <div className="lg:w-[42%] w-full mt-8 lg:mt-0">
+                <div className="w-full lg:w-2/3 max-w-2xl mx-auto lg:mx-0">
                     <MyPostWidget picturePath={user.picturepath} />
                     <PostsWidget userId={user._id} isProfile />
                 </div>
