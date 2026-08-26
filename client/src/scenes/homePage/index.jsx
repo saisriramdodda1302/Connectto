@@ -14,7 +14,7 @@ const HomePage = () => {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 justify-center">
         {/* left part */}
         <div className="w-full lg:w-1/4 lg:max-w-sm">
-          <UserWidget userId={_id} picturePath={picturepath} />
+          <UserWidget userId={_id} picturepath={picturepath} />
         </div>
         
         {/* middle part */}

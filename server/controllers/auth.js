@@ -57,7 +57,7 @@ export const login = async (req,res)=>{
         if(result.rows.length!=1) return res.status(400).json({msg: "User doesn't exist"});
         
         const isMatch = await bcrypt.compare(password,result.rows[0].password);
-        if(!isMatch) return res.status(200).json({msg: "Invalid Credentials"});
+        if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
         const user = result.rows[0];
         user.password="";

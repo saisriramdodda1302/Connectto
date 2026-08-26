@@ -35,7 +35,7 @@ const ProfilePage = () => {
             <Navbar />
             <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 justify-center">
                 <div className="w-full lg:w-1/3 lg:max-w-md">
-                    <UserWidget userId={user._id} picturePath={user.picturepath} />
+                    <UserWidget userId={user._id} picturepath={user.picturepath} />
                     <div className="my-8" />
                     <FriendListWidget userId={user._id} type="profile" />
                 </div>
