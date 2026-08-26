@@ -1,22 +1,24 @@
-import rateLimit from "express-rate-limit";
-
-// IP+User combined rate limiting.
-export const createRateLimiter = (options) => {
-    return rateLimit({
-        windowMs: options.windowMs || 15 * 60 * 1000, // default is 15 mins.
-        max: options.max || 100, // limiting each IP or User to 100 requests per `window`.
-        message: { message: "Too many requests, please try again later." },
-        standardHeaders: true,
-        legacyHeaders: false,
-        keyGenerator: (req) => {
-            // Combining IP and userId if available (assuming user is appended to req by verifyToken)
-            // But verifyToken in auth.js might not put `req.user`, it currently does `req.user = verified;`
-            const ip = req.ip || req.connection.remoteAddress;
-            const userId = req.user ? req.user.id : "guest";
-            return `${ip}_${userId}`;
-        }
-    });
-};
+import { rateLimit, ipKeyGenerator } from "express-rate-limit";
+/**
+ * composite IP +user rate limiting.
+ *
+// Keying on IP alone punishes everyone behind one campus or office network.
+// Keying on user alone leaves /auth/login open to credential stuffing, since
+// there is no user yet. Combining them gives each logged-in user their own
+// bucket while guests still fall back to per-IP.
+ *
+ * ipKeyGenerator normalises
+ */
+export const createRateLimiter = (options = {}) =>
+  rateLimit({
+    windowMs: options.windowMs || 15 * 60 * 1000,
+    limit: options.max || 100,
+    message: { message: "Too many requests, please try again later." },
+    standardHeaders: "draft-7",
+    legacyHeaders: false,
+    keyGenerator: (req) =>
+      req.user?.id ? `user_${req.user.id}` : `ip_${ipKeyGenerator(req.ip)}`,
+  });
 
 export const apiLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 150 });
 export const authLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 });

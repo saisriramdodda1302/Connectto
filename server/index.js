@@ -23,6 +23,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 env.config();
 const app = express();
+app.set("trust proxy", 1);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -42,7 +43,11 @@ if (!fs.existsSync("public/assets")) {
 app.use(express.json({limit:"30mb", extended: true})); //makes the maximum limit to send as 30mb.
 app.use(express.urlencoded({limit:"30mb",extended:true}));//makes the maximum limit to send a 30.
 
-app.use(cors());
+const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:3000")
+  .split(",")
+  .map((o) => o.trim());
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use("/assets",express.static(path.join(__dirname, 'public/assets')));//In a real system, you need to store this locally
 
 //File Storage.
@@ -65,6 +70,16 @@ import { authLimiter, postLimiter } from "./middleware/rateLimiter.js";
 app.post("/auth/register", authLimiter, upload.single("picture"), register);
 app.post("/posts", verifyToken, postLimiter, upload.single("picture"), createPost);
 
+app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
+
+app.get("/ready", async (req, res) => {
+  try {
+    await db.query("SELECT 1");
+    res.status(200).json({ status: "ready" });
+  } catch {
+    res.status(503).json({ status: "database unavailable" });
+  }
+});
 //Routes.
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);

@@ -59,3 +59,18 @@ CREATE INDEX idx_post_id ON post(_id DESC);
 CREATE INDEX idx_post_userid ON post(userid);
 CREATE INDEX idx_likes_post_id ON likes(post_id);
 CREATE INDEX idx_comments_post_id ON comments(post_id);
+
+
+CREATE TABLE IF NOT EXISTS messages (
+    _id SERIAL PRIMARY KEY,
+    sender_id INTEGER REFERENCES users(_id) ON DELETE CASCADE NOT NULL,
+    receiver_id INTEGER REFERENCES users(_id) ON DELETE CASCADE NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--serves both directions of a 1:1 conversation.
+CREATE INDEX IF NOT EXISTS idx_messages_pair
+    ON messages (sender_id, receiver_id, _id DESC);
+CREATE INDEX IF NOT EXISTS idx_messages_pair_rev
+    ON messages (receiver_id, sender_id, _id DESC);
