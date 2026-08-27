@@ -41,9 +41,14 @@ export const register = async (req,res)=>{
 
     }
     catch(err){
-        res.status(500).json({error: err.message});
+        // 23505 = unique_violation -> the email is already registered
+        if (err.code === "23505") {
+            return res.status(409).json({ message: "An account with that email already exists." });
+        }
+        console.error("Register failed:", err);
+        res.status(500).json({ message: "Could not create account. Please try again." });
     }
-    
+
 }
 
 //Login
@@ -54,10 +59,10 @@ export const login = async (req,res)=>{
         const {email,password} = req.body;
         const result = await db.query("SELECT * FROM users WHERE email = $1",[email]);
 
-        if(result.rows.length!=1) return res.status(400).json({msg: "User doesn't exist"});
-        
+        if(result.rows.length!=1) return res.status(400).json({message: "Invalid email or password"});
+
         const isMatch = await bcrypt.compare(password,result.rows[0].password);
-        if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+        if (!isMatch) return res.status(401).json({ message: "Invalid email or password" });
 
         const user = result.rows[0];
         user.password="";
@@ -72,6 +77,7 @@ export const login = async (req,res)=>{
 
     }
     catch(err){
-        res.status(500).json({error: err.message});
+        console.error("Login failed:", err);
+        res.status(500).json({ message: "Something went wrong. Please try again." });
     }
 }

@@ -31,7 +31,6 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 });
-app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin"}));
 app.use(morgan("common"));
@@ -40,14 +39,36 @@ if (!fs.existsSync("public/assets")) {
     fs.mkdirSync("public/assets", { recursive: true });
 }
 
-app.use(express.json({limit:"30mb", extended: true})); //makes the maximum limit to send as 30mb.
+app.use(express.json({limit:"30mb"})); //makes the maximum limit to send as 30mb.
 app.use(express.urlencoded({limit:"30mb",extended:true}));//makes the maximum limit to send a 30.
 
-const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:3000")
-  .split(",")
-  .map((o) => o.trim());
+// Known deployment targets are always allowed; extra origins can be added via
+// the CLIENT_URL env var (comma-separated). Missing/incorrect CLIENT_URL was
+// silently blocking every browser request from the deployed frontend.
+const defaultOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://connectto-saisriramdodda1302.vercel.app",
+];
+const allowedOrigins = [
+  ...defaultOrigins,
+  ...(process.env.CLIENT_URL || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean),
+];
 
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+const corsOptions = {
+  origin(origin, callback) {
+    // no Origin header => non-browser client (curl, mobile, health checks)
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(null, false);
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use("/assets",express.static(path.join(__dirname, 'public/assets')));//In a real system, you need to store this locally
 
 //File Storage.

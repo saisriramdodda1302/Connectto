@@ -61,9 +61,15 @@ const Form = () => {
       await axios.post("/auth/register", formData);
       onSubmitProps.resetForm();
       setPageType("login");
+      message.success("Account created. Please log in.");
     } catch (err) {
       console.log(err);
-      message.error("Error creating account");
+      message.error(
+        err.response?.data?.message ||
+          (err.code === "ERR_NETWORK"
+            ? "Cannot reach the server. Please try again shortly."
+            : "Error creating account")
+      );
     }
   };
 
@@ -92,8 +98,13 @@ const Form = () => {
         console.log(err);
       }
     } catch (err) {
-      message.error("Incorrect Username or Password");
       console.log(err);
+      message.error(
+        err.response?.data?.message ||
+          (err.code === "ERR_NETWORK"
+            ? "Cannot reach the server. Please try again shortly."
+            : "Incorrect email or password")
+      );
     }
   };
 
