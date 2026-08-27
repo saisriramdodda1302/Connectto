@@ -42,9 +42,7 @@ if (!fs.existsSync("public/assets")) {
 app.use(express.json({limit:"30mb"})); //makes the maximum limit to send as 30mb.
 app.use(express.urlencoded({limit:"30mb",extended:true}));//makes the maximum limit to send a 30.
 
-// Known deployment targets are always allowed; extra origins can be added via
-// the CLIENT_URL env var (comma-separated). Missing/incorrect CLIENT_URL was
-// silently blocking every browser request from the deployed frontend.
+// Known hosts, plus anything in CLIENT_URL (comma-separated).
 const defaultOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
@@ -60,7 +58,7 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin(origin, callback) {
-    // no Origin header => non-browser client (curl, mobile, health checks)
+    // no Origin header => non-browser client (curl, health checks)
     if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
     return callback(null, false);
   },

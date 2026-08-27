@@ -46,15 +46,7 @@ const UserWidget = ({ userId, picturepath }) => {
     return null;
   }
 
-  const {
-    firstname,
-    lastname,
-    location,
-    occupation,
-    viewedprofile,
-    impressions,
-    friends,
-  } = user;
+  const { firstname, lastname, location, occupation, friends } = user;
 
   return (
     <WidgetWrapper>
@@ -77,27 +69,15 @@ const UserWidget = ({ userId, picturepath }) => {
       </FlexBetween>
 
       {/* Second Row */}
-      <div className="py-6 border-b border-neutral-200 dark:border-neutral-700 transition-colors duration-300">
-        <div className="flex items-center gap-4 mb-4 text-neutral-500 dark:text-neutral-400">
+      <div className="pt-6 text-neutral-500 dark:text-neutral-400">
+        <div className="flex items-center gap-4 mb-4">
           <MapPin className="w-7 h-7" />
           <p className="text-lg">{location}</p>
         </div>
-        <div className="flex items-center gap-4 text-neutral-500 dark:text-neutral-400">
+        <div className="flex items-center gap-4">
           <Briefcase className="w-7 h-7" />
           <p className="text-lg">{occupation}</p>
         </div>
-      </div>
-
-      {/* Third row */}
-      <div className="py-6 transition-colors duration-300">
-        <FlexBetween className="mb-3">
-          <p className="text-neutral-500 dark:text-neutral-400 text-lg">Who's viewed your profile</p>
-          <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">{viewedprofile}</p>
-        </FlexBetween>
-        <FlexBetween>
-          <p className="text-neutral-500 dark:text-neutral-400 text-lg">Impressions of your post</p>
-          <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">{impressions}</p>
-        </FlexBetween>
       </div>
     </WidgetWrapper>
   );

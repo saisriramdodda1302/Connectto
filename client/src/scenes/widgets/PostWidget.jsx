@@ -1,11 +1,11 @@
 import {
   MessageCircle,
   Heart,
-  Share2,
   Send
 } from "lucide-react";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
+import UserImage from "components/UserImage";
 import WidgetWrapper from "components/WidgetWrapper";
 import axios from "axios";
 import { useState } from "react";
@@ -107,10 +107,6 @@ const PostWidget = ({
             <p className="text-neutral-600 dark:text-gray-300 font-medium">{comments.length}</p>
           </FlexBetween>
         </FlexBetween>
-
-        <button className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-300">
-          <Share2 className="w-6 h-6 text-neutral-500 dark:text-gray-400" />
-        </button>
       </FlexBetween>
       
       {isComments && (
@@ -136,11 +132,7 @@ const PostWidget = ({
           <div className="flex flex-col gap-4">
             {comments.map((comment, i) => (
               <div key={`${comment.id}-${i}`} className="flex gap-3">
-                <img 
-                  src={`${import.meta.env.VITE_API_URL || "http://localhost:3001"}/assets/${comment.picturePath}`} 
-                  alt="user"
-                  className="w-8 h-8 rounded-full object-cover"
-                />
+                <UserImage image={comment.picturePath} size="32px" />
                 <div className="flex flex-col bg-neutral-100 dark:bg-neutral-800 px-4 py-2.5 rounded-2xl rounded-tl-sm w-fit max-w-[85%]">
                   <span className="font-semibold text-sm text-neutral-800 dark:text-gray-200">
                     {comment.firstName} {comment.lastName}

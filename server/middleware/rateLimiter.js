@@ -1,14 +1,6 @@
 import { rateLimit, ipKeyGenerator } from "express-rate-limit";
-/**
- * composite IP +user rate limiting.
- *
-// Keying on IP alone punishes everyone behind one campus or office network.
-// Keying on user alone leaves /auth/login open to credential stuffing, since
-// there is no user yet. Combining them gives each logged-in user their own
-// bucket while guests still fall back to per-IP.
- *
- * ipKeyGenerator normalises
- */
+
+// Limit per logged-in user when we have one, otherwise per IP.
 export const createRateLimiter = (options = {}) =>
   rateLimit({
     windowMs: options.windowMs || 15 * 60 * 1000,

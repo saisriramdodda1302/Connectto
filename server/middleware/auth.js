@@ -17,7 +17,6 @@ export const verifyToken = async(req,res,next)=>{
     }
 
     catch(err){
-        // an invalid or expired token is a client problem, not a server error
         res.status(401).json({ message: "Invalid or expired session. Please log in again." });
     }
 }

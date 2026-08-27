@@ -1,21 +1,30 @@
 import axios from "axios";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "state";
 
 const FriendListWidget = ({ userId, type = "home" }) => {
-  const friends = useSelector((state) => state.value.user.friends);
+  const myFriends = useSelector((state) => state.value.user.friends);
   const token = useSelector((state) => state.value.token);
   const dispatch = useDispatch();
+  const [profileFriends, setProfileFriends] = useState([]);
+
+  // Home shows my own friends (kept in redux); a profile shows someone else's.
+  const isProfile = type === "profile";
+  const friends = isProfile ? profileFriends : myFriends;
 
   const getFriends = async () => {
     try {
       const response = await axios.get(`/users/${userId}/friends`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      dispatch(setFriends({ friends: response.data }));
+      if (isProfile) {
+        setProfileFriends(response.data);
+      } else {
+        dispatch(setFriends({ friends: response.data }));
+      }
     } catch (err) {
       console.log(err);
     }

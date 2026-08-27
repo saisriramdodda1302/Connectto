@@ -6,12 +6,15 @@ import UserWidget from "scenes/widgets/UserWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
 import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
+import Friend from "components/Friend";
+import WidgetWrapper from "components/WidgetWrapper";
 import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
     const { userId } = useParams();
     const [user, setUser] = useState(null);
     const token = useSelector((state) => state.value.token);
+    const loggedInId = useSelector((state) => state.value.user._id);
 
     const getUser = async () => {
         try {
@@ -36,6 +39,16 @@ const ProfilePage = () => {
             <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 justify-center">
                 <div className="w-full lg:w-1/3 lg:max-w-md">
                     <UserWidget userId={user._id} picturepath={user.picturepath} />
+                    {loggedInId !== user._id && (
+                        <WidgetWrapper className="mt-8">
+                            <Friend
+                                friendId={user._id}
+                                name={`${user.firstname} ${user.lastname}`}
+                                subtitle={user.occupation}
+                                userPicturePath={user.picturepath}
+                            />
+                        </WidgetWrapper>
+                    )}
                     <div className="my-8" />
                     <FriendListWidget userId={user._id} type="profile" />
                 </div>

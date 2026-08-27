@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFriends } from "state";
 import NavBar from "scenes/navbar";
 import UserImage from "components/UserImage";
 import { io } from "socket.io-client";
-import { Send, MessageSquare } from "lucide-react";
+import { Send, MessageSquare, UserPlus } from "lucide-react";
 import axios from "axios";
 
 const ChatPage = () => {
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.value.user);
     const token = useSelector((state) => state.value.token);
     const friends = user?.friends || [];
@@ -15,6 +17,7 @@ const ChatPage = () => {
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState("");
     const [socket, setSocket] = useState(null);
+    const [otherChats, setOtherChats] = useState([]);
     const messagesEndRef = useRef(null);
 
     const backendUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
@@ -36,11 +39,9 @@ const ChatPage = () => {
         if (!socket) return;
         
         socket.on("receiveMessage", (message) => {
-            // Only push to local state if the message corresponds to the currently opened chat
-            if (
-                selectedFriend && 
-                (message.sender_id === selectedFriend._id || message.sender_id === user._id)
-            ) {
+            // our own messages are already shown optimistically on send
+            if (message.sender_id === user._id) return;
+            if (selectedFriend && message.sender_id === selectedFriend._id) {
                 setMessages((prev) => [...prev, message]);
             }
         });
@@ -64,10 +65,37 @@ const ChatPage = () => {
         getMessages();
     }, [selectedFriend, user._id, token, backendUrl]);
 
+    // People this user has chatted with (used to surface non-friends)
+    useEffect(() => {
+        const getOtherChats = async () => {
+            try {
+                const res = await axios.get(`${backendUrl}/messages/threads/${user._id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setOtherChats(res.data);
+            } catch (err) {
+                console.error("Error fetching conversations", err);
+            }
+        };
+        getOtherChats();
+    }, [user._id, token, backendUrl]);
+
     // Scroll to bottom when messages update
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    const addFriend = async (friendId) => {
+        try {
+            const res = await axios.patch(`${backendUrl}/users/${user._id}/${friendId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            dispatch(setFriends({ friends: res.data }));
+            setSelectedFriend((prev) => (prev ? { ...prev, notFriend: false } : prev));
+        } catch (err) {
+            console.error("Error adding friend", err);
+        }
+    };
 
     const handleSendMessage = async () => {
         if (!inputText.trim() || !selectedFriend) return;
@@ -101,9 +129,15 @@ const ChatPage = () => {
         }
     };
 
+    const friendIds = new Set(friends.map((f) => f._id));
+    const nonFriendChats = otherChats
+        .filter((c) => c._id !== user._id && !friendIds.has(c._id))
+        .map((c) => ({ ...c, notFriend: true }));
+
     const chatList = [
         { ...user, isYou: true },
-        ...friends
+        ...friends,
+        ...nonFriendChats
     ];
 
     return (
@@ -132,6 +166,9 @@ const ChatPage = () => {
                                         {friend.firstname || friend.firstName} {friend.lastname || friend.lastName}
                                         {friend.isYou && " (You)"}
                                     </h3>
+                                    {friend.notFriend && (
+                                        <p className="text-xs text-neutral-500 dark:text-neutral-400">Not in your friends</p>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -146,12 +183,23 @@ const ChatPage = () => {
                             <div className="p-4 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-center gap-4 shrink-0 shadow-sm z-20">
                                 <button className="md:hidden p-2 mr-2 bg-neutral-100 rounded-full dark:bg-neutral-800" onClick={() => setSelectedFriend(null)}>🔙</button>
                                 <UserImage image={selectedFriend.picturepath || selectedFriend.picturePath} size="45px" />
-                                <div>
+                                <div className="flex-1">
                                     <h3 className="font-bold text-lg dark:text-gray-100">
                                         {selectedFriend.firstname || selectedFriend.firstName} {selectedFriend.lastname || selectedFriend.lastName}
                                         {selectedFriend.isYou && " (You)"}
                                     </h3>
+                                    {selectedFriend.notFriend && (
+                                        <p className="text-xs text-neutral-500 dark:text-neutral-400">Not in your friends</p>
+                                    )}
                                 </div>
+                                {selectedFriend.notFriend && (
+                                    <button
+                                        onClick={() => addFriend(selectedFriend._id)}
+                                        className="flex items-center gap-2 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800/40 transition-colors"
+                                    >
+                                        <UserPlus className="w-4 h-4" /> Add friend
+                                    </button>
+                                )}
                             </div>
 
                             <div className="flex-1 overflow-y-auto p-4 space-y-4">

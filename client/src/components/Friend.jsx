@@ -50,7 +50,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, type }) => {
           </p>
         </div>
       </FlexBetween>
-      {_id != friendId && type != "profile" && (
+      {_id != friendId && (
         <button
           onClick={() => patchFriend()}
           className="bg-blue-100 dark:bg-blue-900/30 p-2 text-blue-700 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800/40 transition-colors duration-300 inline-flex items-center justify-center p-[0.6rem]"

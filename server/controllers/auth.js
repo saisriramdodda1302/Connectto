@@ -41,7 +41,7 @@ export const register = async (req,res)=>{
 
     }
     catch(err){
-        // 23505 = unique_violation -> the email is already registered
+        // duplicate email
         if (err.code === "23505") {
             return res.status(409).json({ message: "An account with that email already exists." });
         }

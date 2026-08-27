@@ -38,8 +38,7 @@ export const getUserFriends = async(req,res)=>{
 
 }
 
-// Search users by name/email, or (with no search term) list other accounts to
-// discover. Self is always excluded.
+// With ?search= returns matching accounts, otherwise a few recent ones. Excludes self.
 export const getUsers = async (req, res) => {
     try {
         const currentId = req.user?.id || 0;

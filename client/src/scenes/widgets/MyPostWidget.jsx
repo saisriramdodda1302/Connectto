@@ -1,17 +1,13 @@
 import {
   Pencil,
   Trash,
-  Paperclip,
-  Image as ImageIcon,
-  Mic,
-  MoreHorizontal,
-  Film
+  Image as ImageIcon
 } from "lucide-react";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import UserImage from "components/UserImage";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
@@ -23,14 +19,6 @@ const MyPostWidget = ({ picturePath }) => {
   const [post, setPost] = useState("");
   const { _id } = useSelector((state) => state.value.user);
   const token = useSelector((state) => state.value.token);
-  
-  // Basic media query equivalent
-  const [isNonMobileScreens, setIsNonMobileScreens] = useState(window.innerWidth >= 1000);
-  useEffect(() => {
-    const handleResize = () => setIsNonMobileScreens(window.innerWidth >= 1000);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -108,29 +96,6 @@ const MyPostWidget = ({ picturePath }) => {
           <ImageIcon className="w-7 h-7" />
           <p className="text-lg">Image</p>
         </FlexBetween>
-
-        {isNonMobileScreens ? (
-          <>
-            <FlexBetween gap="0.25rem" className="text-neutral-500 dark:text-neutral-400">
-              <Film className="w-7 h-7" />
-              <p className="text-lg">Clip</p>
-            </FlexBetween>
-
-            <FlexBetween gap="0.25rem" className="text-neutral-500 dark:text-neutral-400">
-              <Paperclip className="w-7 h-7" />
-              <p className="text-lg">Attachment</p>
-            </FlexBetween>
-
-            <FlexBetween gap="0.25rem" className="text-neutral-500 dark:text-neutral-400">
-              <Mic className="w-7 h-7" />
-              <p className="text-lg">Audio</p>
-            </FlexBetween>
-          </>
-        ) : (
-          <FlexBetween gap="0.25rem" className="text-neutral-500 dark:text-neutral-400">
-            <MoreHorizontal className="w-7 h-7" />
-          </FlexBetween>
-        )}
 
         <button
           disabled={!post}

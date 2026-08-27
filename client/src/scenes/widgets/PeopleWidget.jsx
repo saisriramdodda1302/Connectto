@@ -5,9 +5,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-// Lists other accounts pulled from the database so the user can follow them.
-// With a ?search= query param it shows matching accounts instead of suggestions,
-// which is what the navbar search box drives.
+// Other accounts to follow; the navbar search drives the ?search= param.
 const PeopleWidget = () => {
   const token = useSelector((state) => state.value.token);
   const [people, setPeople] = useState([]);
