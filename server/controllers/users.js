@@ -38,6 +38,44 @@ export const getUserFriends = async(req,res)=>{
 
 }
 
+// Search users by name/email, or (with no search term) list other accounts to
+// discover. Self is always excluded.
+export const getUsers = async (req, res) => {
+    try {
+        const currentId = req.user?.id || 0;
+        const search = (req.query.search || "").trim();
+
+        let result;
+        if (search) {
+            const term = `%${search}%`;
+            result = await db.query(
+                `SELECT _id, firstname, lastname, email, picturepath, location, occupation
+                 FROM users
+                 WHERE _id <> $1
+                   AND (firstname ILIKE $2 OR lastname ILIKE $2 OR email ILIKE $2
+                        OR (firstname || ' ' || lastname) ILIKE $2)
+                 ORDER BY firstname ASC
+                 LIMIT 20`,
+                [currentId, term]
+            );
+        } else {
+            result = await db.query(
+                `SELECT _id, firstname, lastname, email, picturepath, location, occupation
+                 FROM users
+                 WHERE _id <> $1
+                 ORDER BY _id DESC
+                 LIMIT 10`,
+                [currentId]
+            );
+        }
+
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error("getUsers failed:", err);
+        res.status(500).json({ message: "Could not load users." });
+    }
+};
+
 export const addRemoveFriend = async (req,res)=>{
     try{
         const {id,friendId} = req.params;

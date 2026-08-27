@@ -4,6 +4,7 @@ import UserWidget from "scenes/widgets/UserWidget";
 import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
+import PeopleWidget from "scenes/widgets/PeopleWidget";
 
 const HomePage = () => {
   const { _id, picturepath } = useSelector((state) => state.value.user);
@@ -25,6 +26,7 @@ const HomePage = () => {
         
         {/* rightside part only visible on big screens.*/}
         <div className="hidden lg:block lg:w-1/4 lg:max-w-sm">
+          <PeopleWidget />
           <FriendListWidget userId={_id} />
         </div>
       </div>

@@ -16,8 +16,15 @@ import FlexBetween from "components/FlexBetween";
 
 const NavBar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const submitSearch = (e) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    navigate(q ? `/home?search=${encodeURIComponent(q)}` : "/home");
+  };
   const user = useSelector((state) => state.value.user);
   const mode = useSelector((state) => state.value.mode);
 
@@ -32,15 +39,20 @@ const NavBar = () => {
         >
           Connectto
         </h1>
-        <div className="hidden lg:flex items-center bg-neutral-100 dark:bg-neutral-800 rounded-md gap-4 px-6 py-2 transition-colors duration-300">
+        <form
+          onSubmit={submitSearch}
+          className="hidden lg:flex items-center bg-neutral-100 dark:bg-neutral-800 rounded-md gap-4 px-6 py-2 transition-colors duration-300"
+        >
           <input
             placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-transparent outline-none border-none py-1 text-neutral-800 dark:text-gray-100 w-full"
           />
-          <button>
+          <button type="submit">
             <Search className="w-5 h-5 text-neutral-500 dark:text-neutral-400" />
           </button>
-        </div>
+        </form>
       </FlexBetween>
 
       {/* Desktop Nav */}

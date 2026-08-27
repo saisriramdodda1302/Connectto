@@ -1,6 +1,5 @@
 import {
   UserCog,
-  Pencil,
   MapPin,
   Briefcase
 } from "lucide-react";
@@ -90,7 +89,7 @@ const UserWidget = ({ userId, picturepath }) => {
       </div>
 
       {/* Third row */}
-      <div className="py-6 border-b border-neutral-200 dark:border-neutral-700 transition-colors duration-300">
+      <div className="py-6 transition-colors duration-300">
         <FlexBetween className="mb-3">
           <p className="text-neutral-500 dark:text-neutral-400 text-lg">Who's viewed your profile</p>
           <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">{viewedprofile}</p>
@@ -98,35 +97,6 @@ const UserWidget = ({ userId, picturepath }) => {
         <FlexBetween>
           <p className="text-neutral-500 dark:text-neutral-400 text-lg">Impressions of your post</p>
           <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">{impressions}</p>
-        </FlexBetween>
-      </div>
-
-      {/* Fourth row */}
-      <div className="pt-6">
-        <p className="text-lg text-neutral-700 dark:text-gray-200 font-medium mb-6">
-          Social Profiles
-        </p>
-
-        <FlexBetween gap="1rem" className="mb-4">
-          <FlexBetween gap="1.5rem">
-            <img src="../assets/twitter.png" alt="twitter" className="w-8 h-8" />
-            <div>
-              <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">Twitter</p>
-              <p className="text-neutral-500 dark:text-neutral-400 text-base">Social Network</p>
-            </div>
-          </FlexBetween>
-          <Pencil className="w-6 h-6 text-neutral-500 dark:text-neutral-400 cursor-pointer hover:text-blue-500 transition" />
-        </FlexBetween>
-
-        <FlexBetween gap="1rem">
-          <FlexBetween gap="1.5rem">
-            <img src="../assets/linkedin.png" alt="linkedin" className="w-8 h-8" />
-            <div>
-              <p className="text-neutral-700 dark:text-gray-200 font-medium text-lg">Linkedin</p>
-              <p className="text-neutral-500 dark:text-neutral-400 text-base">Network Platform</p>
-            </div>
-          </FlexBetween>
-          <Pencil className="w-6 h-6 text-neutral-500 dark:text-neutral-400 cursor-pointer hover:text-blue-500 transition" />
         </FlexBetween>
       </div>
     </WidgetWrapper>
