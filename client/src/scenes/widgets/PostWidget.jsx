@@ -35,6 +35,10 @@ const PostWidget = ({
   const isLiked = likes.find((index) => index.userid === loggedInUserId);
   const likeCount = likes.length;
 
+  const postImageSrc = /^(data:|https?:)/.test(picturePath || "")
+    ? picturePath
+    : `${import.meta.env.VITE_API_URL || "http://localhost:3001"}/assets/${picturePath}`;
+
   const patchLike = async () => {
     const response = await axios.patch(`/posts/${postId}/like`, { userId: loggedInUserId }, {
       headers: {
@@ -84,7 +88,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           className="rounded-xl mt-4 object-cover max-h-[500px]"
-          src={`${import.meta.env.VITE_API_URL || "http://localhost:3001"}/assets/${picturePath}`}
+          src={postImageSrc}
         />
       )}
       <FlexBetween className="mt-4 pb-2">

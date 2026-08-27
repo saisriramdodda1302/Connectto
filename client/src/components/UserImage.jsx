@@ -5,6 +5,10 @@ export default function UserImage({ image, size = "60px" }) {
   const backendUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
   const [failed, setFailed] = useState(false);
 
+  const src = /^(data:|https?:)/.test(image || "")
+    ? image
+    : `${backendUrl}/assets/${image}`;
+
   return (
     <div
       className="rounded-full overflow-hidden shrink-0 bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center"
@@ -18,7 +22,7 @@ export default function UserImage({ image, size = "60px" }) {
           width={size}
           height={size}
           alt="user"
-          src={`${backendUrl}/assets/${image}`}
+          src={src}
           onError={() => setFailed(true)}
         />
       )}

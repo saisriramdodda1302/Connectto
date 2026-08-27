@@ -9,9 +9,12 @@ export const register = async (req,res)=>{
         email,
         location,
         occupation,
-        picturePath,
         password
     } = req.body;
+
+    const picturePath = req.file
+        ? `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
+        : req.body.picturePath || null;
 
     try{
         //hash the password
@@ -34,8 +37,6 @@ export const register = async (req,res)=>{
             viewedProfile: viewedProfile,
             impressions: impressions,
         }
-
-        console.log(user);
 
         res.status(201).json(user);
 

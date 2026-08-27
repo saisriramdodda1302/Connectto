@@ -11,7 +11,7 @@ CREATE TABLE users (
     lastName VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    picturePath VARCHAR(255),
+    picturePath TEXT,
     location VARCHAR(255),
     occupation VARCHAR(255),
     viewedProfile INT DEFAULT 0,
@@ -23,7 +23,7 @@ CREATE TABLE post (
     _id SERIAL PRIMARY KEY,
     userid INT NOT NULL,
     description TEXT,
-    picturepath VARCHAR(255),
+    picturepath TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userid) REFERENCES users(_id) ON DELETE CASCADE
 );

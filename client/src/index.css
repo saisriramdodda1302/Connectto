@@ -5,9 +5,22 @@
 
 html,
 body,
-#root,
-.app{
+#root{
   height:100%;
   width:100%;
   font-family: "Rubik", sans-serif;
+}
+
+/* grow with the content so the themed background covers the whole page */
+.app{
+  min-height:100%;
+  width:100%;
+}
+
+body{
+  background-color:#f6f6f6;
+}
+
+html.dark body{
+  background-color:#171717;
 }

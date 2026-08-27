@@ -1,5 +1,4 @@
 import express from "express";
-import fs from "fs";
 import db from "./dbConnect.js";
 import cors from "cors";
 import env from "dotenv";
@@ -35,10 +34,6 @@ app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin"}));
 app.use(morgan("common"));
 
-if (!fs.existsSync("public/assets")) {
-    fs.mkdirSync("public/assets", { recursive: true });
-}
-
 app.use(express.json({limit:"30mb"})); //makes the maximum limit to send as 30mb.
 app.use(express.urlencoded({limit:"30mb",extended:true}));//makes the maximum limit to send a 30.
 
@@ -69,17 +64,8 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 app.use("/assets",express.static(path.join(__dirname, 'public/assets')));//In a real system, you need to store this locally
 
-//File Storage.
-const storage = multer.diskStorage({
-    destination: function(req,file,cb){
-        cb(null,"public/assets");
-    },
-    filename: function(req,file,cb){
-        cb(null,file.originalname);
-    }
-});
-
-const upload = multer({storage});//this helps in the uploading part.
+// Kept in memory and stored as a base64 data URI (Render's disk is ephemeral).
+const upload = multer({ storage: multer.memoryStorage() });
 
 const port = process.env.PORT;
 

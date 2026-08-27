@@ -21,7 +21,10 @@ const postDetailsSelect = `
 // Creating a post
 export const createPost = async (req,res) =>{
     try{
-        const {userId, description, picturepath} = req.body;
+        const {userId, description} = req.body;
+        const picturepath = req.file
+            ? `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
+            : req.body.picturepath || null;
         const insertRes = await db.query("INSERT INTO post(userid,description,picturepath) VALUES($1,$2,$3) RETURNING _id", [userId,description,picturepath]);
         const postId = insertRes.rows[0]._id;
         
