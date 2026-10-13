@@ -11,7 +11,7 @@ export function useTheme() {
     try {
       localStorage.setItem('theme', next);
     } catch {
-      /* storage blocked */
+      //storage blocked.
     }
     setTheme(next);
   };

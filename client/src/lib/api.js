@@ -12,12 +12,13 @@ export async function api(path, { method = 'GET', body, form } = {}) {
     body: form ?? (body ? JSON.stringify(body) : undefined),
   });
 
-  if (res.status === 204) return null;
+  if (res.status === 204) return null;//no data recvd.
   const data = await res.json().catch(() => ({}));
 
-  if (!res.ok) {
+  if (!res.ok) {//anything outside 200 series.
     if (res.status === 401 && !path.startsWith('/auth/')) window.dispatchEvent(new Event('ct:signedout'));
     throw new ApiError(res.status, data.error || `Request failed (${res.status}).`);
   }
   return data;
 }
+//401->unauthorized...and if user trying to get in..throw user to signup page.
